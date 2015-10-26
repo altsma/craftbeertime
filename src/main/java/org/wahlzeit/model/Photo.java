@@ -73,6 +73,11 @@ public class Photo extends DataObject {
 	 *
 	 */
 	protected String ownerId;
+
+	/**
+	 *
+	 */
+	protected Coordinate location = null;
 	
 	/**
 	 * Each photo can be viewed in different sizes (XS, S, M, L, XL)
@@ -188,6 +193,21 @@ public class Photo extends DataObject {
 	 */
 	public void setOwnerId(String newName) {
 		ownerId = newName;
+		incWriteCount();
+	}
+
+	/**
+	 * @methodtype get
+	 */
+	public Coordinate getLocation() {
+		return location;
+	}
+
+	/**
+	 * @methodtype set
+	 */
+	public void setLocation(Coordinate newLocation) {
+		location = newLocation;
 		incWriteCount();
 	}
 
