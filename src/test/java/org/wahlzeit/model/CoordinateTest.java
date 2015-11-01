@@ -1,6 +1,6 @@
 package org.wahlzeit.model;
 
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class CoordinateTest {
@@ -8,6 +8,7 @@ public class CoordinateTest {
     private final Coordinate BERLIN = new Coordinate(52.5243700, 13.4105300);
     private final double DELTA = 0.001d;
     private final double NODELTA = 0.0d;
+    private final double KMDELTA = 1.0d; // allow 1km deviation
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorSetLatitudeMin() throws Exception {
@@ -46,22 +47,22 @@ public class CoordinateTest {
 
     @Test
     public void testGetDistance() throws Exception {
-        Assert.assertEquals(new Coordinate(0.0, 0.0), LONDON.getDistance(LONDON));
-        Assert.assertEquals(new Coordinate(1.01584, 13.53627), LONDON.getDistance(BERLIN));
-        Assert.assertEquals(LONDON.getDistance(BERLIN), BERLIN.getDistance(LONDON));
+        assertEquals(0.0, LONDON.getDistance(LONDON), NODELTA);
+        assertEquals(932.0, LONDON.getDistance(BERLIN), KMDELTA);
+        assertEquals(LONDON.getDistance(BERLIN), BERLIN.getDistance(LONDON), NODELTA);
     }
 
     @Test
     public void testGetLatitudinalDistance() throws Exception {
-        Assert.assertEquals(0.0d, LONDON.getLatitudinalDistance(LONDON), DELTA);
-        Assert.assertEquals(1.01584d, LONDON.getLatitudinalDistance(BERLIN), DELTA);
-        Assert.assertEquals(LONDON.getLatitudinalDistance(BERLIN), BERLIN.getLatitudinalDistance(LONDON), NODELTA);
+        assertEquals(0.0d, LONDON.getLatitudinalDistance(LONDON), DELTA);
+        assertEquals(1.01584d, LONDON.getLatitudinalDistance(BERLIN), DELTA);
+        assertEquals(LONDON.getLatitudinalDistance(BERLIN), BERLIN.getLatitudinalDistance(LONDON), NODELTA);
     }
 
     @Test
     public void testGetLongitudinalDistance() throws Exception {
-        Assert.assertEquals(0.0d, LONDON.getLongitudinalDistance(LONDON), DELTA);
-        Assert.assertEquals(13.53627d, LONDON.getLongitudinalDistance(BERLIN), DELTA);
-        Assert.assertEquals(LONDON.getLongitudinalDistance(BERLIN), BERLIN.getLongitudinalDistance(LONDON), NODELTA);
+        assertEquals(0.0d, LONDON.getLongitudinalDistance(LONDON), DELTA);
+        assertEquals(13.53627d, LONDON.getLongitudinalDistance(BERLIN), DELTA);
+        assertEquals(LONDON.getLongitudinalDistance(BERLIN), BERLIN.getLongitudinalDistance(LONDON), NODELTA);
     }
 }

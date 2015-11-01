@@ -58,11 +58,18 @@ public class Coordinate extends DataObject {
     /**
      * @methodtype get
      */
-    public Coordinate getDistance(Coordinate coordinate) {
+    public double getDistance(Coordinate coordinate) {
         if (coordinate == null) {
             throw new IllegalArgumentException("coordinate must not be null");
         }
-        return new Coordinate(getLatitudinalDistance(coordinate), getLongitudinalDistance(coordinate));
+
+        final double EARTHRADIUS = 6371.0; // in kilometer
+        double dLat = Math.toRadians(getLatitudinalDistance(coordinate));
+        double dLng = Math.toRadians(getLongitudinalDistance(coordinate));
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(getLatitude())) * Math.cos(Math.toRadians(coordinate.getLatitude())) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return EARTHRADIUS * c;
     }
 
     /**
