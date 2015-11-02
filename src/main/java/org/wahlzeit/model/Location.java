@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.StringUtil;
+
 public class Location {
     private String name;
     public Coordinate coordinate;
@@ -8,8 +10,8 @@ public class Location {
      * @methodtype constructor
      */
     public Location(String name, Coordinate coordinate) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name must not be null");
+        if (StringUtil.isNullOrEmptyString(name)) {
+            throw new IllegalArgumentException("Name must not be null nor empty");
         }
 
         if (coordinate == null) {
