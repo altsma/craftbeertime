@@ -1,7 +1,9 @@
 package org.wahlzeit.model;
 
+import com.googlecode.objectify.annotation.Subclass;
 import org.wahlzeit.utils.StringUtil;
 
+@Subclass
 public class CraftbeerPhoto extends Photo {
     private String beerStyle;
     private String breweryName;
