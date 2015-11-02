@@ -6,9 +6,9 @@ import org.junit.Test;
 public class CoordinateTest {
     private final Coordinate LONDON = new Coordinate(51.5085300, -0.1257400);
     private final Coordinate BERLIN = new Coordinate(52.5243700, 13.4105300);
-    private final double DELTA = 0.001d;
-    private final double NODELTA = 0.0d;
-    private final double KMDELTA = 1.0d; // allow 1km deviation
+    private final double DELTA = 0.001;
+    private final double NODELTA = 0.0;
+    private final double KMDELTA = 1.0; // allow 1km deviation
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorSetLatitudeMin() throws Exception {
@@ -54,15 +54,15 @@ public class CoordinateTest {
 
     @Test
     public void testGetLatitudinalDistance() throws Exception {
-        assertEquals(0.0d, LONDON.getLatitudinalDistance(LONDON), DELTA);
-        assertEquals(1.01584d, LONDON.getLatitudinalDistance(BERLIN), DELTA);
+        assertEquals(0.0, LONDON.getLatitudinalDistance(LONDON), DELTA);
+        assertEquals(1.01584, LONDON.getLatitudinalDistance(BERLIN), DELTA);
         assertEquals(LONDON.getLatitudinalDistance(BERLIN), BERLIN.getLatitudinalDistance(LONDON), NODELTA);
     }
 
     @Test
     public void testGetLongitudinalDistance() throws Exception {
-        assertEquals(0.0d, LONDON.getLongitudinalDistance(LONDON), DELTA);
-        assertEquals(13.53627d, LONDON.getLongitudinalDistance(BERLIN), DELTA);
+        assertEquals(0.0, LONDON.getLongitudinalDistance(LONDON), DELTA);
+        assertEquals(13.53627, LONDON.getLongitudinalDistance(BERLIN), DELTA);
         assertEquals(LONDON.getLongitudinalDistance(BERLIN), BERLIN.getLongitudinalDistance(LONDON), NODELTA);
     }
 }
