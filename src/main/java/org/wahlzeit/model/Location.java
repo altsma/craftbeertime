@@ -1,9 +1,13 @@
 package org.wahlzeit.model;
 
+import com.googlecode.objectify.annotation.Container;
 import org.wahlzeit.utils.StringUtil;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable{
     private String name;
+    @Container
     public Coordinate coordinate;
 
     /**
