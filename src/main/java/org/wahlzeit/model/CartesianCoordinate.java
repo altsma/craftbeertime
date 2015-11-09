@@ -1,0 +1,148 @@
+package org.wahlzeit.model;
+
+import java.util.Objects;
+
+import static java.lang.Math.*;
+
+public class CartesianCoordinate implements Coordinate {
+    private double x;
+    private double y;
+    private double z;
+
+    private final double EARTHRADIUS = 6371.0; // earth radius in kilometer
+
+    /**
+     * @methodtype constructor
+     */
+    public CartesianCoordinate() {
+        setX(0.0);
+        setY(0.0);
+        setZ(0.0);
+    }
+
+    /**
+     * @methodtype constructor
+     */
+    public CartesianCoordinate(double x, double y, double z) {
+        setX(x);
+        setY(y);
+        setZ(z);
+    }
+
+    /**
+     * @methodtype get
+     */
+    public double getX() {
+        return x;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setX(double x) {
+        if (Double.isNaN(x)) {
+            throw new IllegalArgumentException("x must be a double value!");
+        }
+        this.x = x;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public double getY() {
+        return y;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setY(double y) {
+        if (Double.isNaN(x)) {
+            throw new IllegalArgumentException("y must be a double value!");
+        }
+        this.y = y;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public double getZ() {
+
+        return z;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setZ(double z) {
+        if (Double.isNaN(x)) {
+            throw new IllegalArgumentException("z must be a double value!");
+        }
+        this.z = z;
+    }
+
+    /**
+     * @methodtype conversion
+     */
+    private CartesianCoordinate asCartesianCoordinate(Coordinate coordinate) {
+        if (coordinate instanceof CartesianCoordinate) {
+            return (CartesianCoordinate) coordinate;
+        } else if (coordinate instanceof SphericCoordinate) {
+            SphericCoordinate sphericCoordinate = (SphericCoordinate) coordinate;
+            double lat = toRadians(sphericCoordinate.getLatitude());
+            double lng = toRadians(sphericCoordinate.getLongitude());
+            double x = EARTHRADIUS * cos(lat) * cos(lng);
+            double y = EARTHRADIUS * cos(lat) * sin(lng);
+            double z = EARTHRADIUS * sin(lat);
+
+            return new CartesianCoordinate(x, y, z);
+        } else {
+            throw new IllegalArgumentException("coordinate must be instance of SphericCoordinate or CartesianCoordinate!");
+        }
+    }
+
+    /**
+     * @methodtype get
+     */
+    @Override
+    public double getDistance(Coordinate coordinate) {
+        CartesianCoordinate cartesianCoordinate = asCartesianCoordinate(coordinate);
+
+        double x = pow(cartesianCoordinate.getX() - getX(), 2);
+        double y = pow(cartesianCoordinate.getY() - getY(), 2);
+        double z = pow(cartesianCoordinate.getZ() - getZ(), 2);
+
+        return sqrt(x + y + z);
+    }
+
+    /**
+     * @methodtype boolean-query
+     */
+    @Override
+    public boolean isEqual(Coordinate coordinate) {
+        CartesianCoordinate cartesianCoordinate = asCartesianCoordinate(coordinate);
+
+        return cartesianCoordinate.getX() == x && cartesianCoordinate.getY() == y && cartesianCoordinate.getZ() == z;
+    }
+
+    /**
+     * @methodtype boolean-query
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartesianCoordinate that = (CartesianCoordinate) o;
+        return Objects.equals(x, that.x) &&
+                Objects.equals(y, that.y) &&
+                Objects.equals(z, that.z);
+    }
+
+    /**
+     * @methodtype get
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
+    }
+}
