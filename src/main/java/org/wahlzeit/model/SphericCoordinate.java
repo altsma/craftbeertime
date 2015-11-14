@@ -122,9 +122,8 @@ public class SphericCoordinate implements Coordinate {
      * @methodtype get
      */
     public double getLatitudinalDistance(Coordinate coordinate) {
-        if (coordinate == null) {
-            throw new IllegalArgumentException("coordinate must not be null");
-        }
+        assertIsNotNull(coordinate, "coordinate");
+
         SphericCoordinate sphericCoordinate = asSphericCoordinate(coordinate);
         return (double) round(abs(getLatitude() - sphericCoordinate.getLatitude()) * 1000000) / 1000000;
     }
@@ -133,9 +132,8 @@ public class SphericCoordinate implements Coordinate {
      * @methodtype get
      */
     public double getLongitudinalDistance(Coordinate coordinate) {
-        if (coordinate == null) {
-            throw new IllegalArgumentException("coordinate must not be null");
-        }
+        assertIsNotNull(coordinate, "coordinate");
+
         SphericCoordinate sphericCoordinate = asSphericCoordinate(coordinate);
         return (double) round(abs(getLongitude() - sphericCoordinate.getLongitude()) * 1000000) / 1000000;
     }
@@ -168,5 +166,14 @@ public class SphericCoordinate implements Coordinate {
     @Override
     public int hashCode() {
         return Objects.hash(latitude, longitude);
+    }
+
+    /**
+     * @methodtype assertion
+     */
+    public void assertIsNotNull(Coordinate coordinate, String valueName) {
+        if (coordinate == null) {
+            throw new IllegalArgumentException(valueName + " must not be null");
+        }
     }
 }

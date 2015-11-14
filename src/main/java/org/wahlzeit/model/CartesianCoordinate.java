@@ -40,9 +40,7 @@ public class CartesianCoordinate implements Coordinate {
      * @methodtype set
      */
     public void setX(double x) {
-        if (Double.isNaN(x)) {
-            throw new IllegalArgumentException("x must be a double value!");
-        }
+        assertIsNotNaN(x, "x");
         this.x = x;
     }
 
@@ -57,9 +55,7 @@ public class CartesianCoordinate implements Coordinate {
      * @methodtype set
      */
     public void setY(double y) {
-        if (Double.isNaN(x)) {
-            throw new IllegalArgumentException("y must be a double value!");
-        }
+        assertIsNotNaN(y, "y");
         this.y = y;
     }
 
@@ -75,9 +71,7 @@ public class CartesianCoordinate implements Coordinate {
      * @methodtype set
      */
     public void setZ(double z) {
-        if (Double.isNaN(x)) {
-            throw new IllegalArgumentException("z must be a double value!");
-        }
+        assertIsNotNaN(z, "z");
         this.z = z;
     }
 
@@ -144,5 +138,14 @@ public class CartesianCoordinate implements Coordinate {
     @Override
     public int hashCode() {
         return Objects.hash(x, y, z);
+    }
+
+    /**
+     * @methodtype assertion
+     */
+    public void assertIsNotNaN(double value, String valueName) {
+        if (Double.isNaN(value)) {
+            throw new IllegalArgumentException(valueName + " must be a double value!");
+        }
     }
 }

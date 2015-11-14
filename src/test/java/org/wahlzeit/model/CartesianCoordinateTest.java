@@ -10,9 +10,8 @@ public class CartesianCoordinateTest {
     private CartesianCoordinate defaultConstructor;
     private CartesianCoordinate zero;
     private CartesianCoordinate nineninenine;
-    private final double ZEROPOINTZERO = 0.0;
     private final double DELTA = 0.001;
-    private final double NODELTA = ZEROPOINTZERO;
+    private final double NODELTA = 0.0;
     private final double KMDELTA = 1.0; // allow 1km deviation
 
     @Before
@@ -24,7 +23,7 @@ public class CartesianCoordinateTest {
 
     @Test
     public void testGetDistance() throws Exception {
-        assertEquals(ZEROPOINTZERO, defaultConstructor.getDistance(zero), NODELTA);
+        assertEquals(0.0, defaultConstructor.getDistance(zero), NODELTA);
         assertEquals(15.58845726812, zero.getDistance(nineninenine), DELTA);
         assertEquals(zero.getDistance(nineninenine), nineninenine.getDistance(zero), NODELTA);
     }
