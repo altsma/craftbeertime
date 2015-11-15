@@ -1,10 +1,10 @@
 package org.wahlzeit.model;
 
-import com.google.appengine.repackaged.org.joda.time.IllegalInstantException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CartesianCoordinateTest {
     private CartesianCoordinate defaultConstructor;
