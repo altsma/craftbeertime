@@ -15,27 +15,39 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype constructor
      */
     public SphericCoordinate() {
+        assertClassInvariants();
+
         setLatitude(0.0);
         setLongitude(0.0);
         setRadius(0.0);
+
+        assertClassInvariants();
     }
 
     /**
      * @methodtype constructor
      */
     public SphericCoordinate(double latitude, double longitude) {
+        assertClassInvariants();
+
         setLatitude(latitude);
         setLongitude(longitude);
         setRadius(0.0);
+
+        assertClassInvariants();
     }
 
     /**
      * @methodtype constructor
      */
     public SphericCoordinate(double latitude, double longitude, double radius) {
+        assertClassInvariants();
+
         setLatitude(latitude);
         setLongitude(longitude);
         setRadius(radius);
+
+        assertClassInvariants();
     }
 
     /**
@@ -83,6 +95,9 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype set
      */
     public void setRadius(double radius) {
+        if (Double.isNaN(radius)) {
+            throw new IllegalArgumentException("radius must be double value");
+        }
         this.radius = radius;
     }
 
@@ -114,8 +129,10 @@ public class SphericCoordinate extends AbstractCoordinate {
         double dLng = toRadians(getLongitudinalDistance(sphericCoordinate));
         double a = sin(dLat / 2) * sin(dLat / 2) + cos(toRadians(getLatitude())) * cos(toRadians(sphericCoordinate.getLatitude())) * sin(dLng / 2) * sin(dLng / 2);
         double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+        double distance = EARTHRADIUS * c;
 
-        return EARTHRADIUS * c;
+        assert distance >= 0.0 : "distance must be greater than or equal zero";
+        return distance;
     }
 
     /**
@@ -171,9 +188,22 @@ public class SphericCoordinate extends AbstractCoordinate {
     /**
      * @methodtype assertion
      */
-    public void assertIsNotNull(Coordinate coordinate, String valueName) {
+    protected void assertIsNotNull(Coordinate coordinate, String valueName) {
         if (coordinate == null) {
             throw new IllegalArgumentException(valueName + " must not be null");
         }
+    }
+
+    /**
+     * @methodtype assertion
+     */
+    protected void assertClassInvariants() {
+        assert latitude <= 90 : "latitude must be a double between South and North Pole (-90.0 and 90.0)";
+        assert latitude >= -90 : "latitude must be a double between South and North Pole (-90.0 and 90.0)";
+        assert !Double.isNaN(latitude) : "latitude must be a double between South and North Pole (-90.0 and 90.0)";
+        assert longitude <= 90 : "longitude must be a double between -180.0 and 180.0";
+        assert longitude >= -90 : "longitude must be a double between -180.0 and 180.0";
+        assert !Double.isNaN(longitude) : "longitude must be a double between -180.0 and 180.0 ";
+        assert !Double.isNaN(radius) : "radius must be double value";
     }
 }

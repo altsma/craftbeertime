@@ -15,18 +15,26 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodtype constructor
      */
     public CartesianCoordinate() {
+        assertClassInvariants();
+
         setX(0.0);
         setY(0.0);
         setZ(0.0);
+
+        assertClassInvariants();
     }
 
     /**
      * @methodtype constructor
      */
     public CartesianCoordinate(double x, double y, double z) {
+        assertClassInvariants();
+
         setX(x);
         setY(y);
         setZ(z);
+
+        assertClassInvariants();
     }
 
     /**
@@ -105,8 +113,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
         double x = pow(cartesianCoordinate.getX() - getX(), 2);
         double y = pow(cartesianCoordinate.getY() - getY(), 2);
         double z = pow(cartesianCoordinate.getZ() - getZ(), 2);
+        double distance = sqrt(x + y + z);
 
-        return sqrt(x + y + z);
+        assert distance >= 0.0 : "distance must be greater than or equal zero";
+        return distance;
     }
 
     /**
@@ -143,9 +153,18 @@ public class CartesianCoordinate extends AbstractCoordinate {
     /**
      * @methodtype assertion
      */
-    public void assertIsNotNaN(double value, String valueName) {
+    protected void assertIsNotNaN(double value, String valueName) {
         if (Double.isNaN(value)) {
             throw new IllegalArgumentException(valueName + " must be a double value!");
         }
+    }
+
+    /**
+     * @methodtype assertion
+     */
+    protected void assertClassInvariants() {
+        assert !Double.isNaN(this.getX()) : "x must be a number";
+        assert !Double.isNaN(this.getY()) : "y must be a number";
+        assert !Double.isNaN(this.getY()) : "z must be a number";
     }
 }
