@@ -14,12 +14,19 @@ import org.wahlzeit.model.PhotoCase;
 import org.wahlzeit.model.Tag;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.persistence.DatastoreAdapter.ImageWrapper;
+import org.wahlzeit.utils.Pattern;
 
 /**
  * A badly named class, to be renamed to ObjectifyService first, something better later.
  * 
  * @review
  */
+@Pattern(
+	name = "Adapter",
+	participants = {
+		"Adaptee"
+	}
+)
 public class OfyService {
 
 	/**
