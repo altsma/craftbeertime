@@ -9,8 +9,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
     private double y;
     private double z;
 
-    private final double EARTHRADIUS = 6371.0; // earth radius in kilometer
-
     /**
      * @methodtype constructor
      */
@@ -81,42 +79,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
     public void setZ(double z) {
         assertIsNotNaN(z, "z");
         this.z = z;
-    }
-
-    /**
-     * @methodtype conversion
-     */
-    private CartesianCoordinate asCartesianCoordinate(Coordinate coordinate) {
-        if (coordinate instanceof CartesianCoordinate) {
-            return (CartesianCoordinate) coordinate;
-        } else if (coordinate instanceof SphericCoordinate) {
-            SphericCoordinate sphericCoordinate = (SphericCoordinate) coordinate;
-            double lat = toRadians(sphericCoordinate.getLatitude());
-            double lng = toRadians(sphericCoordinate.getLongitude());
-            double x = EARTHRADIUS * cos(lat) * cos(lng);
-            double y = EARTHRADIUS * cos(lat) * sin(lng);
-            double z = EARTHRADIUS * sin(lat);
-
-            return new CartesianCoordinate(x, y, z);
-        } else {
-            throw new IllegalArgumentException("coordinate must be instance of SphericCoordinate or CartesianCoordinate!");
-        }
-    }
-
-    /**
-     * @methodtype get
-     */
-    @Override
-    public double getDistance(Coordinate coordinate) {
-        CartesianCoordinate cartesianCoordinate = asCartesianCoordinate(coordinate);
-
-        double x = pow(cartesianCoordinate.getX() - getX(), 2);
-        double y = pow(cartesianCoordinate.getY() - getY(), 2);
-        double z = pow(cartesianCoordinate.getZ() - getZ(), 2);
-        double distance = sqrt(x + y + z);
-
-        assert distance >= 0.0 : "distance must be greater than or equal zero";
-        return distance;
     }
 
     /**
