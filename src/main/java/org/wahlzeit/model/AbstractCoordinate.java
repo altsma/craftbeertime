@@ -48,5 +48,9 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @methodtype boolean-query
      */
     @Override
-    public abstract boolean isEqual(Coordinate coordinate);
+    public boolean isEqual(Coordinate coordinate) {
+        assert coordinate != null : "coordinate object must not be null";
+
+        return this == coordinate || this.getDistance(coordinate) < 0.001;
+    }
 }

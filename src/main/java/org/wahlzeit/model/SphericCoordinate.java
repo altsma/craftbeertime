@@ -1,38 +1,29 @@
 package org.wahlzeit.model;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 import static java.lang.Math.*;
 
 public class SphericCoordinate extends AbstractCoordinate {
-    private double latitude;
-    private double longitude;
-    private double radius;
+    private final double latitude;
+    private final double longitude;
+    private final double radius;
 
-    private final double EARTHRADIUS = 6371.0; // earth radius in kilometer
+    private static final double EARTHRADIUS = 6371.0; // earth radius in kilometer
 
-    /**
-     * @methodtype constructor
-     */
-    public SphericCoordinate() {
-        assertClassInvariants();
-
-        setLatitude(0.0);
-        setLongitude(0.0);
-        setRadius(0.0);
-
-        assertClassInvariants();
-    }
+    private static HashMap<String, SphericCoordinate> allInstances = new HashMap<>();
 
     /**
      * @methodtype constructor
      */
     public SphericCoordinate(double latitude, double longitude) {
-        assertClassInvariants();
+        assertIsValidLatitude(latitude);
+        assertIsValidLongitude(longitude);
 
-        setLatitude(latitude);
-        setLongitude(longitude);
-        setRadius(0.0);
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.radius = 0.0;
 
         assertClassInvariants();
     }
@@ -41,11 +32,12 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype constructor
      */
     public SphericCoordinate(double latitude, double longitude, double radius) {
-        assertClassInvariants();
+        assertIsValidLatitude(latitude);
+        assertIsValidLongitude(longitude);
 
-        setLatitude(latitude);
-        setLongitude(longitude);
-        setRadius(radius);
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.radius = radius;
 
         assertClassInvariants();
     }
@@ -58,30 +50,10 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * @methodtype set
-     */
-    public void setLatitude(double latitude) {
-        if (latitude < -90.0 || latitude > 90.0 || Double.isNaN(latitude)) {
-            throw new IllegalArgumentException("Latitude must be a double between South and North Pole (-90.0 and 90.0)");
-        }
-        this.latitude = latitude;
-    }
-
-    /**
      * @methodtype get
      */
     public double getLongitude() {
         return longitude;
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setLongitude(double longitude) {
-        if (longitude < -180.0 || longitude > 180.0 || Double.isNaN(longitude)) {
-            throw new IllegalArgumentException("Longitude must be a double between -180.0 and 180.0");
-        }
-        this.longitude = longitude;
     }
 
     /**
@@ -92,14 +64,30 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * @methodtype set
+     * @methodtype get
      */
-    public void setRadius(double radius) {
-        if (Double.isNaN(radius)) {
-            throw new IllegalArgumentException("radius must be double value");
-        }
-        this.radius = radius;
+    public static SphericCoordinate getSphericCoordinate(double latitude, double longitude) {
+        return SphericCoordinate.getSphericCoordinate(latitude, longitude, EARTHRADIUS);
     }
+
+    /**
+     * @methodtype get
+     */
+    public static SphericCoordinate getSphericCoordinate(double latitude, double longitude, double radius) {
+        String key = latitude + ", " + longitude + ", " + radius;
+        SphericCoordinate result = allInstances.get(key);
+        if (result == null) {
+            synchronized (allInstances) {
+                result = allInstances.get(key);
+                if (result == null) {
+                    result = new SphericCoordinate(latitude, longitude, radius);
+                    allInstances.put(key, result);
+                }
+            }
+        }
+        return result;
+    }
+
 
     /**
      * @methodtype conversion
@@ -122,8 +110,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     /**
      * @methodtype get
      */
-    @Override
-    public double getDistance(Coordinate coordinate) {
+    public double getDistance(SphericCoordinate coordinate) {
         SphericCoordinate sphericCoordinate = asSphericCoordinate(coordinate);
         double dLat = toRadians(getLatitudinalDistance(sphericCoordinate));
         double dLng = toRadians(getLongitudinalDistance(sphericCoordinate));
@@ -138,7 +125,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     /**
      * @methodtype get
      */
-    public double getLatitudinalDistance(Coordinate coordinate) {
+    public double getLatitudinalDistance(SphericCoordinate coordinate) {
         assertIsNotNull(coordinate, "coordinate");
 
         SphericCoordinate sphericCoordinate = asSphericCoordinate(coordinate);
@@ -148,7 +135,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     /**
      * @methodtype get
      */
-    public double getLongitudinalDistance(Coordinate coordinate) {
+    public double getLongitudinalDistance(SphericCoordinate coordinate) {
         assertIsNotNull(coordinate, "coordinate");
 
         SphericCoordinate sphericCoordinate = asSphericCoordinate(coordinate);
@@ -158,8 +145,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     /**
      * @methodtype boolean-query
      */
-    @Override
-    public boolean isEqual(Coordinate coordinate) {
+    public boolean isEqual(SphericCoordinate coordinate) {
         SphericCoordinate sphericCoordinate = asSphericCoordinate(coordinate);
 
         return sphericCoordinate.getLatitude() == latitude && sphericCoordinate.getLongitude() == longitude && sphericCoordinate.getRadius() == radius;
@@ -191,6 +177,24 @@ public class SphericCoordinate extends AbstractCoordinate {
     protected void assertIsNotNull(Coordinate coordinate, String valueName) {
         if (coordinate == null) {
             throw new IllegalArgumentException(valueName + " must not be null");
+        }
+    }
+
+    /**
+     * @methodtype assertion
+     */
+    private void assertIsValidLatitude(double latitude) {
+        if (latitude < -90.0 || latitude > 90.0 || Double.isNaN(latitude)) {
+            throw new IllegalArgumentException("Latitude must be a double between South and North Pole (-90.0 and 90.0)");
+        }
+    }
+
+    /**
+     * @methodtype assertion
+     */
+    private void assertIsValidLongitude(double longitude) {
+        if (longitude < -180.0 || longitude > 180.0 || Double.isNaN(longitude)) {
+            throw new IllegalArgumentException("Longitude must be a double between -180.0 and 180.0");
         }
     }
 

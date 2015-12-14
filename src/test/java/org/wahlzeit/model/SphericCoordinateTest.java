@@ -17,7 +17,6 @@ public class SphericCoordinateTest {
 
     @Before
     public void setUp() throws Exception {
-        defaultConstructor = new SphericCoordinate();
         zero = new SphericCoordinate(0.0, 0.0);
         london = new SphericCoordinate(51.5085300, -0.1257400);
         berlin = new SphericCoordinate(52.5243700, 13.4105300);
@@ -45,17 +44,17 @@ public class SphericCoordinateTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetDistanceForNullInput() throws Exception {
-        new SphericCoordinate().getDistance(null);
+        zero.getDistance(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetLatitudinalDistanceForNullInput() throws Exception {
-        new SphericCoordinate().getLatitudinalDistance(null);
+        london.getLatitudinalDistance(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetLongitudinalDistanceForNullInput() throws Exception {
-        new SphericCoordinate().getLongitudinalDistance(null);
+        berlin.getLongitudinalDistance(null);
     }
 
     @Test
@@ -81,6 +80,6 @@ public class SphericCoordinateTest {
 
     @Test
     public void testIsEqual() throws Exception {
-        assertTrue(defaultConstructor.isEqual(zero));
+        assertTrue(zero.isEqual(zero));
     }
 }

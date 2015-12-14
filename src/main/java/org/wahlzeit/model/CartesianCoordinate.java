@@ -1,36 +1,26 @@
 package org.wahlzeit.model;
 
+import java.util.HashMap;
 import java.util.Objects;
 
-import static java.lang.Math.*;
-
 public class CartesianCoordinate extends AbstractCoordinate {
-    private double x;
-    private double y;
-    private double z;
+    private final double x;
+    private final double y;
+    private final double z;
 
-    /**
-     * @methodtype constructor
-     */
-    public CartesianCoordinate() {
-        assertClassInvariants();
-
-        setX(0.0);
-        setY(0.0);
-        setZ(0.0);
-
-        assertClassInvariants();
-    }
+    private static HashMap<String, CartesianCoordinate> allInstances = new HashMap<>();
 
     /**
      * @methodtype constructor
      */
     public CartesianCoordinate(double x, double y, double z) {
-        assertClassInvariants();
+        assertIsNotNaN(x, "x");
+        assertIsNotNaN(y, "y");
+        assertIsNotNaN(z, "z");
 
-        setX(x);
-        setY(y);
-        setZ(z);
+        this.x = x;
+        this.y = y;
+        this.z = z;
 
         assertClassInvariants();
     }
@@ -43,26 +33,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * @methodtype set
-     */
-    public void setX(double x) {
-        assertIsNotNaN(x, "x");
-        this.x = x;
-    }
-
-    /**
      * @methodtype get
      */
     public double getY() {
         return y;
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setY(double y) {
-        assertIsNotNaN(y, "y");
-        this.y = y;
     }
 
     /**
@@ -74,11 +48,21 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * @methodtype set
+     * @methodtype get
      */
-    public void setZ(double z) {
-        assertIsNotNaN(z, "z");
-        this.z = z;
+    public static CartesianCoordinate getCartesianCoordinate(double x, double y, double z) {
+        String key = x + ", " + y + ", " + z;
+        CartesianCoordinate result = allInstances.get(key);
+        if (result == null) {
+            synchronized (allInstances) {
+                result = allInstances.get(key);
+                if (result == null) {
+                    result = new CartesianCoordinate(x, y, z);
+                    allInstances.put(key, result);
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -127,6 +111,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
     protected void assertClassInvariants() {
         assert !Double.isNaN(this.getX()) : "x must be a number";
         assert !Double.isNaN(this.getY()) : "y must be a number";
-        assert !Double.isNaN(this.getY()) : "z must be a number";
+        assert !Double.isNaN(this.getZ()) : "z must be a number";
     }
 }
