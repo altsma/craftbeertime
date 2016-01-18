@@ -38,7 +38,7 @@ public abstract class AbstractCoordinate implements Coordinate {
             double y = EARTHRADIUS * cos(lat) * sin(lng);
             double z = EARTHRADIUS * sin(lat);
 
-            return new CartesianCoordinate(x, y, z);
+            return CartesianCoordinate.getCartesianCoordinate(x, y, z);
         } else {
             throw new IllegalArgumentException("coordinate must be instance of SphericCoordinate or CartesianCoordinate!");
         }

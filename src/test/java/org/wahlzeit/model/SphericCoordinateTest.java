@@ -17,29 +17,29 @@ public class SphericCoordinateTest {
 
     @Before
     public void setUp() throws Exception {
-        zero = new SphericCoordinate(0.0, 0.0);
-        london = new SphericCoordinate(51.5085300, -0.1257400);
-        berlin = new SphericCoordinate(52.5243700, 13.4105300);
+        zero = SphericCoordinate.getSphericCoordinate(0.0, 0.0);
+        london = SphericCoordinate.getSphericCoordinate(51.5085300, -0.1257400);
+        berlin = SphericCoordinate.getSphericCoordinate(52.5243700, 13.4105300);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorSetLatitudeMin() throws Exception {
-        new SphericCoordinate(-99.9, ZEROPOINTZERO);
+        SphericCoordinate.getSphericCoordinate(-99.9, ZEROPOINTZERO);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorSetLatitudeMax() throws Exception {
-        new SphericCoordinate(99.9, ZEROPOINTZERO);
+        SphericCoordinate.getSphericCoordinate(99.9, ZEROPOINTZERO);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorSetLongitudeMin() throws Exception {
-        new SphericCoordinate(ZEROPOINTZERO, -999.9);
+        SphericCoordinate.getSphericCoordinate(ZEROPOINTZERO, -999.9);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorSetLongitudeMax() throws Exception {
-        new SphericCoordinate(ZEROPOINTZERO, 999.9);
+        SphericCoordinate.getSphericCoordinate(ZEROPOINTZERO, 999.9);
     }
 
     @Test(expected = IllegalArgumentException.class)

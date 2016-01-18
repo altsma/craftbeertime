@@ -14,8 +14,8 @@ public class CartesianCoordinateTest {
 
     @Before
     public void setUp() throws Exception {
-        zero = new CartesianCoordinate(0.0, 0.0, 0.0);
-        nineninenine = new CartesianCoordinate(9.0, 9.0, 9.0);
+        zero = CartesianCoordinate.getCartesianCoordinate(0.0, 0.0, 0.0);
+        nineninenine = CartesianCoordinate.getCartesianCoordinate(9.0, 9.0, 9.0);
     }
 
     @Test

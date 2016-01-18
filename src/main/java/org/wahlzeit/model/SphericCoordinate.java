@@ -17,7 +17,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     /**
      * @methodtype constructor
      */
-    public SphericCoordinate(double latitude, double longitude) {
+    private SphericCoordinate(double latitude, double longitude) {
         assertIsValidLatitude(latitude);
         assertIsValidLongitude(longitude);
 
@@ -31,7 +31,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     /**
      * @methodtype constructor
      */
-    public SphericCoordinate(double latitude, double longitude, double radius) {
+    private SphericCoordinate(double latitude, double longitude, double radius) {
         assertIsValidLatitude(latitude);
         assertIsValidLongitude(longitude);
 

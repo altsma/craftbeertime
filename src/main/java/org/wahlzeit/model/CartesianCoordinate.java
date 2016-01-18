@@ -13,7 +13,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     /**
      * @methodtype constructor
      */
-    public CartesianCoordinate(double x, double y, double z) {
+    private CartesianCoordinate(double x, double y, double z) {
         assertIsNotNaN(x, "x");
         assertIsNotNaN(y, "y");
         assertIsNotNaN(z, "z");
